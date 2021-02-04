@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Main {
 
     static FileWriter writer = null;
-    static boolean stop = true, readtheory;
+    static boolean stop = true, readTheory;
     static String hours, hours_all, hours_theory;
     static Timer timer = new Timer();
 
@@ -37,12 +37,12 @@ public class Main {
                 if (!stop) {
                     stop = true;
                     timer.stopTimer();
-                    writeToFile(decimalFormat.format(readFromFile()+timer.sumDuration()));
+                    writeToFile(decimalFormat.format(readFromFile() + timer.sumDuration()));
                 }
             } else if (value == 2) {
                 if (stop) {
                     stop = false;
-                    readtheory = true;
+                    readTheory = true;
                     timer.startTimer();
                     System.out.print(">>>> ");
                 }
@@ -50,14 +50,18 @@ public class Main {
                 if (!stop) {
                     stop = true;
                     timer.stopTimer();
-                    writeToFile_theory(decimalFormat.format(readFromFile_theory()+timer.sumDuration()));
+                    writeToFile_theory(decimalFormat.format(readFromFile_theory() + timer.sumDuration()));
                 }
+            } else if (value == 6711) {
+                writeToFile(Integer.toString(0));
+                writeToFile_theory(Integer.toString(0));
+                writeToFile_all(Integer.toString(0));
             } else if (value == 9) {
                 break;
             }
         }
 
-        if (readtheory) {
+        if (readTheory) {
             writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile_theory()));
         } else {
             writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile()));
@@ -167,5 +171,4 @@ public class Main {
             e.printStackTrace();
         }
     }
-
 }
