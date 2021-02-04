@@ -1,4 +1,4 @@
-package com.Snake;
+package com.Timer;
 
 public class Timer {
 
@@ -13,7 +13,7 @@ public class Timer {
     }
 
     public double sumDuration() {
-        duration = ((stopValue - startValue)/3600000000000.0);
+        duration = ((stopValue - startValue)/1000000000.0);
         return duration;
     }
 }

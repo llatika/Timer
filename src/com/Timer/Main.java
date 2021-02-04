@@ -1,30 +1,31 @@
-package com.Snake;
+package com.Timer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
     static FileWriter writer = null;
-    static boolean stop = true;
-    static String hours,hours_all;
+    static boolean stop = true, readtheory;
+    static String hours, hours_all, hours_theory;
     static Timer timer = new Timer();
-    File file = new File("Timer.txt");
-    File file2 = new File("Timer_all.txt");
-
 
     public static void main(String[] args) {
         DecimalFormat decimalFormat = new DecimalFormat("0.##");
-        writeToFile(String.valueOf(0));
-
+        int value;
         while (true) {
             Scanner scanner = new Scanner(System.in);
             System.out.print(">>>> ");
-            int value = scanner.nextInt();
+            try {
+                value = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                value = -1;
+            }
 
             if (value == 1) {
                 if (stop) {
@@ -36,13 +37,32 @@ public class Main {
                 if (!stop) {
                     stop = true;
                     timer.stopTimer();
-                    writeToFile(decimalFormat.format(timer.sumDuration()));
+                    writeToFile(decimalFormat.format(readFromFile()+timer.sumDuration()));
+                }
+            } else if (value == 2) {
+                if (stop) {
+                    stop = false;
+                    readtheory = true;
+                    timer.startTimer();
+                    System.out.print(">>>> ");
+                }
+            } else if (value == 3) {
+                if (!stop) {
+                    stop = true;
+                    timer.stopTimer();
+                    writeToFile_theory(decimalFormat.format(readFromFile_theory()+timer.sumDuration()));
                 }
             } else if (value == 9) {
                 break;
             }
         }
-        writeToFile(decimalFormat.format(readFromFile_all()+readFromFile()));
+
+        if (readtheory) {
+            writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile_theory()));
+        } else {
+            writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile()));
+        }
+
     }
 
     public static double readFromFile() {
@@ -59,6 +79,22 @@ public class Main {
         }
 
         return Float.parseFloat(hours);
+    }
+
+    public static double readFromFile_theory() {
+        try {
+            File myObj = new File("Timer_theory.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                hours_theory = myReader.nextLine();
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        return Float.parseFloat(hours_theory);
     }
 
     public static double readFromFile_all() {
@@ -94,6 +130,25 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    public static void writeToFile_theory(String number) {
+        try {
+            writer = new FileWriter("Timer_theory.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            writer.write(number);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void writeToFile_all(String number) {
         try {
             writer = new FileWriter("Timer_all.txt");
