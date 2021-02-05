@@ -18,6 +18,8 @@ public class Main {
     public static void main(String[] args) {
         DecimalFormat decimalFormat = new DecimalFormat("0.##");
         int value;
+        double previousValue= readFromFile();
+        double previousValue_theory=readFromFile_theory();
         while (true) {
             Scanner scanner = new Scanner(System.in);
             System.out.print(">>>> ");
@@ -62,9 +64,12 @@ public class Main {
         }
 
         if (readTheory) {
-            writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile_theory()));
+            writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile_theory()-previousValue_theory));
         } else {
-            writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile()));
+            double a = readFromFile_all();
+            double b=readFromFile();
+            double c =previousValue;
+            writeToFile_all(decimalFormat.format(readFromFile_all() + readFromFile()- previousValue));
         }
 
     }
